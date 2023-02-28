@@ -1,0 +1,19 @@
+# JavaScript / TypeScript
+node_modules
+dist
+yarn-error.log
+tsconfig.tsbuildinfo
+yarn.lock
+package-lock.json
+.yarn
+
+# Environment
+.env
+.env.*
+
+# snek-function
+.sf
+
+
+# SPDX-License-Identifier: (EUPL-1.2)
+# Copyright © 2019-2022 snek.at

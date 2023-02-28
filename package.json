@@ -1,0 +1,42 @@
+{
+  "name": "@snek-functions/template",
+  "baseURL": "https://schettn-special-umbrella-q66979jv7gh4w59-3000.preview.app.github.dev",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Generated with `sf new`",
+  "author": "snek-at",
+  "exports": {
+    "./client": "./src/client/index.ts",
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "./client": [
+        "./src/client/index.ts"
+      ]
+    }
+  },
+  "files": [
+    "src/client",
+    "package.json"
+  ],
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
+  },
+  "dependencies": {
+    "@snek-at/function": "*",
+    "@snek-at/function-cli": "*",
+    "@snek-at/function-server": "*"
+  },
+  "devDependencies": {
+    "commitizen": "^4.2.5",
+    "git-cz": "^4.9.0",
+    "snek-query": "^0.0.53"
+  },
+  "scripts": {
+    "develop": "yarn sf develop",
+    "build": "yarn sf build"
+  }
+}
