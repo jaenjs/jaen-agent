@@ -1,30 +1,16 @@
-import {defineService} from '@snek-at/function'
+import { defineService } from "@snek-at/function";
 
-enum Colors {
-  Red = 'red',
-  Green = 'green',
-  Blue = 'blue'
-}
-
-const helloWorld = () => {
-  return 'Hello world!'
-}
+import { PublishEvent } from "./controllers/PublishEvent";
 
 export default defineService(
   {
-    Query: {
-      helloWorld,
-      crashBecauseOfBoolean: (): boolean => {
-        return true
-      },
-      getFavColor: (): Colors => {
-        return Colors.Red
-      }
-    }
+    Mutation: {
+      publish: PublishEvent.publish,
+    },
   },
   {
     configureApp(app) {
-      return app
-    }
+      return app;
+    },
   }
-)
+);

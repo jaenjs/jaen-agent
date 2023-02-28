@@ -33,7 +33,7 @@
   "devDependencies": {
     "commitizen": "^4.2.5",
     "git-cz": "^4.9.0",
-    "snek-query": "^0.0.53"
+    "snek-query": "^0.0.57"
   },
   "scripts": {
     "develop": "yarn sf develop",
