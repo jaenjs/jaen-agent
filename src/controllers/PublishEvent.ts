@@ -1,66 +1,103 @@
 import { GraphQLError } from "graphql";
 
+/**
+ * Configuration options for publishing a migration to Jaen.
+ */
 interface PublishConfig {
-  jaenGitHubRemote: string;
-  jaenGitHubCwd?: string;
-  jaenGitHubAccessToken: string;
+  /**
+   * The GitHub repository where the migration should be published.
+   */
+  jaenRepository: string;
+  /**
+   * The directory where the Jaen repository is located (default is the current directory).
+   */
+  jaenRepositoryCwd?: string;
+  /**
+   * A GitHub access token with permission to publish to the Jaen repository.
+   */
+  githubAccessToken: string;
 }
 
+/**
+ * Represents a published Jaen migration.
+ */
 export class PublishEvent {
-  static async publish(migrationURL: string, config: PublishConfig) {
+  /**
+   * Publishes a migration to Jaen.
+   *
+   * @param migrationURL - The URL of the migration to publish.
+   * @param config - The publish configuration.
+   * @returns A `PublishEvent` instance representing the published migration.
+   * @throws A `GraphQLError` if the publish event fails.
+   */
+  static async publish(
+    migrationURL: string,
+    config: PublishConfig
+  ): Promise<PublishEvent> {
     const {
-      jaenGitHubRemote,
-      jaenGitHubCwd = ".",
-      jaenGitHubAccessToken,
+      jaenRepository,
+      jaenRepositoryCwd = ".",
+      githubAccessToken,
     } = config;
 
     console.log(
-      `Publishing ${migrationURL}  with the following config:`,
+      `Publishing ${migrationURL} with the following config:`,
       config
     );
 
     const headers = {
       "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `token ${jaenGitHubAccessToken}`,
+      Authorization: `token ${githubAccessToken}`,
       Accept: "application/vnd.github.everest-preview+json",
     };
 
-    const requestURL = `https://api.github.com/repos/${jaenGitHubRemote}/dispatches`;
+    const requestURL = `https://api.github.com/repos/${jaenRepository}/dispatches`;
 
     try {
-      const data = await fetch(requestURL, {
+      const response = await fetch(requestURL, {
         method: "POST",
         headers,
         body: JSON.stringify({
           event_type: "UPDATE_JAEN_RESOURCE",
           client_payload: {
             migrationURL,
-            cwd: jaenGitHubCwd,
+            cwd: jaenRepositoryCwd,
           },
         }),
       });
 
-      if (!data.ok) {
+      if (!response.ok) {
         // handle common errors
-        if (data.status === 401) {
+        if (response.status === 401) {
           throw new GraphQLError("Unauthorized");
         } else {
           throw new GraphQLError("Could not publish event");
         }
       }
-    } catch (e) {
+    } catch (e: unknown) {
       console.error(`Invalid response from ${requestURL}`, e);
       throw new GraphQLError("Could not publish event");
     }
 
-    return new PublishEvent(jaenGitHubRemote, jaenGitHubCwd);
+    return new PublishEvent(jaenRepository);
   }
 
-  publishedDate: Date;
-  repositoryPath: string;
+  /**
+   * The date when the migration was published.
+   */
+  readonly publishedDate: Date;
 
-  constructor(remote: string, cwd: string) {
+  /**
+   * The path of the Jaen repository where the migration was published.
+   */
+  readonly repositoryPath: string;
+
+  /**
+   * Creates a new `PublishEvent` instance.
+   * @param repositoryPath - The path of the Jaen repository where the migration was published.
+   */
+  constructor(repositoryPath: string) {
+    this.repositoryPath = repositoryPath;
     this.publishedDate = new Date();
-    this.repositoryPath = `${remote}/${cwd}`;
   }
 }
