@@ -7,11 +7,11 @@ interface PublishConfig {
   /**
    * The GitHub repository where the migration should be published.
    */
-  jaenRepository: string;
+  repository: string;
   /**
    * The directory where the Jaen repository is located (default is the current directory).
    */
-  jaenRepositoryCwd?: string;
+  repositoryCwd?: string;
   /**
    * A GitHub access token with permission to publish to the Jaen repository.
    */
@@ -34,11 +34,7 @@ export class PublishEvent {
     migrationURL: string,
     config: PublishConfig
   ): Promise<PublishEvent> {
-    const {
-      jaenRepository,
-      jaenRepositoryCwd = ".",
-      githubAccessToken,
-    } = config;
+    const { repository, repositoryCwd = ".", githubAccessToken } = config;
 
     console.log(
       `Publishing ${migrationURL} with the following config:`,
@@ -51,7 +47,7 @@ export class PublishEvent {
       Accept: "application/vnd.github.everest-preview+json",
     };
 
-    const requestURL = `https://api.github.com/repos/${jaenRepository}/dispatches`;
+    const requestURL = `https://api.github.com/repos/${repository}/dispatches`;
 
     try {
       const response = await fetch(requestURL, {
@@ -61,7 +57,7 @@ export class PublishEvent {
           event_type: "UPDATE_JAEN_RESOURCE",
           client_payload: {
             migrationURL,
-            cwd: jaenRepositoryCwd,
+            cwd: repositoryCwd,
           },
         }),
       });
@@ -79,7 +75,7 @@ export class PublishEvent {
       throw new GraphQLError("Could not publish event");
     }
 
-    return new PublishEvent(jaenRepository);
+    return new PublishEvent(repository);
   }
 
   /**
