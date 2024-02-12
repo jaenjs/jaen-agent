@@ -8,11 +8,6 @@ LABEL maintainer="opensource@cronit.io"
 
 WORKDIR /usr/src/pylon
 
-# Create writable volumes
-VOLUME /usr/src/pylon/images
-VOLUME /usr/src/pylon/audio
-VOLUME /usr/src/pylon/files
-
 # Set permissions on volumes
 RUN mkdir -p /usr/src/pylon/images /usr/src/pylon/audio /usr/src/pylon/files \
     && chown -R bun:bun /usr/src/pylon/images /usr/src/pylon/audio /usr/src/pylon/files
