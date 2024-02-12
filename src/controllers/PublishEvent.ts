@@ -1,4 +1,6 @@
+import { requireAuth } from "@cronitio/pylon";
 import { GraphQLError } from "graphql";
+import service from "..";
 
 /**
  * Configuration options for publishing a migration to Jaen.
@@ -12,10 +14,6 @@ interface PublishConfig {
    * The directory where the Jaen repository is located (default is the current directory).
    */
   repositoryCwd?: string;
-  /**
-   * A GitHub access token with permission to publish to the Jaen repository.
-   */
-  githubAccessToken: string;
 }
 
 /**
@@ -30,11 +28,21 @@ export class PublishEvent {
    * @returns A `PublishEvent` instance representing the published migration.
    * @throws A `GraphQLError` if the publish event fails.
    */
+  @requireAuth()
   static async publish(
     migrationURL: string,
     config: PublishConfig
   ): Promise<PublishEvent> {
-    const { repository, repositoryCwd = ".", githubAccessToken } = config;
+    console.log("Publishing");
+    const ctx = service.getContext(this);
+
+    const JAEN_GITHUB_ACCESS_TOKEN = await ctx.getMetadata(
+      "JAEN_GITHUB_ACCESS_TOKEN"
+    );
+
+    console.log("JAEN_GITHUB", JAEN_GITHUB_ACCESS_TOKEN);
+
+    const { repository, repositoryCwd = "." } = config;
 
     console.log(
       `Publishing ${migrationURL} with the following config:`,
@@ -43,7 +51,7 @@ export class PublishEvent {
 
     const headers = {
       "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `token ${githubAccessToken}`,
+      Authorization: `token ${JAEN_GITHUB_ACCESS_TOKEN}`,
       Accept: "application/vnd.github.everest-preview+json",
     };
 

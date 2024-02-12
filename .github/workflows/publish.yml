@@ -2,7 +2,7 @@ name: publish
 
 on: [push]
 env:
-  IMAGE_NAME: template
+  IMAGE_NAME: jaen-agent
 
 jobs:
   # Push image to GitHub Packages.
