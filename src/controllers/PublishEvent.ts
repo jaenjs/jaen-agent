@@ -42,7 +42,7 @@ export class PublishEvent {
 
     console.log("JAEN_GITHUB", JAEN_GITHUB_ACCESS_TOKEN);
 
-    const { repository, repositoryCwd = "." } = config;
+    const { repository, repositoryCwd } = config;
 
     console.log(
       `Publishing ${migrationURL} with the following config:`,
@@ -65,7 +65,7 @@ export class PublishEvent {
           event_type: "UPDATE_JAEN_RESOURCE",
           client_payload: {
             migrationURL,
-            cwd: repositoryCwd,
+            cwd: repositoryCwd || ".",
           },
         }),
       });
