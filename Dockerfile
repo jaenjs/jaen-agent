@@ -35,10 +35,10 @@ RUN bun run pylon build
 # copy production dependencies and source code into final image
 FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/pylon/.pylon/index.js .pylon/index.js
+COPY --from=prerelease /usr/src/pylon/.pylon .pylon
 COPY --from=prerelease /usr/src/pylon/package.json .
 
 # run the app
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "run", "pylon-server" ]
+ENTRYPOINT [ "bun", "run", "./node_modules/.bin/pylon-server" ]
