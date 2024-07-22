@@ -80,16 +80,12 @@ export const configureApp: PylonAPI["configureApp"] = async (app) => {
       throw new Error("No repository found");
     }
 
-    try {
-      const result = await PublishEvent.publish("", {
-        repository,
-        repositoryCwd,
-      });
+    const result = await PublishEvent.publish("", {
+      repository,
+      repositoryCwd,
+    });
 
-      return c.json(result);
-    } catch (e) {
-      throw new Error("Could not publish event");
-    }
+    return c.json(result);
   });
 };
 
