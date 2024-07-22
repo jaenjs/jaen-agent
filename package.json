@@ -10,9 +10,9 @@
     }
   },
   "dependencies": {
-    "@cronitio/pylon": "*",
-    "@cronitio/pylon-cli": "*",
-    "@cronitio/pylon-server": "*",
+    "@getcronit/pylon": "*",
+    "@getcronit/pylon-cli": "*",
+    "@getcronit/pylon-server": "*",
     "hono": "^4.0.1"
   },
   "devDependencies": {

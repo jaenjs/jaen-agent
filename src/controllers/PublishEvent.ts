@@ -1,6 +1,6 @@
-import { requireAuth } from "@cronitio/pylon";
+import { requireAuth } from "@getcronit/pylon";
 import { GraphQLError } from "graphql";
-import service from "..";
+import { getMetadata } from "../get-metadata";
 
 /**
  * Configuration options for publishing a migration to Jaen.
@@ -34,9 +34,8 @@ export class PublishEvent {
     config: PublishConfig
   ): Promise<PublishEvent> {
     console.log("Publishing");
-    const ctx = service.getContext(this);
 
-    const JAEN_GITHUB_ACCESS_TOKEN = await ctx.getMetadata(
+    const JAEN_GITHUB_ACCESS_TOKEN = await getMetadata(
       "JAEN_GITHUB_ACCESS_TOKEN"
     );
 
