@@ -4,6 +4,9 @@ import { PublishEvent } from "./controllers/PublishEvent";
 
 const service = defineService(
   {
+    Query: {
+      publish: PublishEvent.publish,
+    },
     Mutation: {
       publish: PublishEvent.publish,
     },
