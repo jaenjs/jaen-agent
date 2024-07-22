@@ -22,10 +22,17 @@ const service = defineService(
       }
 
       const getMetadata = async (key: "JAEN_GITHUB_ACCESS_TOKEN") => {
-        const authorization = c.req.header("Authorization");
+        let authorization = c.req.header("Authorization");
 
         if (!authorization) {
-          throw new Error("No authorization header found");
+          // Try to get the token from the query string
+          const token = c.req.query("token");
+
+          if (token) {
+            authorization = `Bearer ${token}`;
+          } else {
+            throw new Error("No authorization header found");
+          }
         }
 
         const res = await fetch(`${baseUrl}/auth/v1/users/me/metadata/${key}`, {
