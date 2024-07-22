@@ -4,9 +4,6 @@ import { PublishEvent } from "./controllers/PublishEvent";
 
 const service = defineService(
   {
-    Query: {
-      publish: PublishEvent.publish,
-    },
     Mutation: {
       publish: PublishEvent.publish,
     },
@@ -74,6 +71,26 @@ const service = defineService(
 
 export const configureApp: PylonAPI["configureApp"] = async (app) => {
   app.use("*", auth.initialize());
+
+  app.post("/webhooks/shopify", auth.require(), async (c) => {
+    const repository = c.req.query("repository");
+    const repositoryCwd = c.req.query("repositoryCwd");
+
+    if (!repository) {
+      throw new Error("No repository found");
+    }
+
+    try {
+      const result = await PublishEvent.publish("", {
+        repository,
+        repositoryCwd,
+      });
+
+      return c.json(result);
+    } catch (e) {
+      throw new Error("Could not publish event");
+    }
+  });
 };
 
 export default service;
