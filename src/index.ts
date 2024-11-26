@@ -1,29 +1,44 @@
-import { PylonAPI, ServiceError, auth, defineService } from "@getcronit/pylon";
+import { app, auth } from "@getcronit/pylon";
 
 import { PublishEvent } from "./controllers/PublishEvent";
 
-export default defineService({
+export const graphql = {
+  Query: {
+    version: () => "1.0.0",
+  },
   Mutation: {
     publish: PublishEvent.publish,
   },
+};
+
+// Log incoming headers
+app.use("*", async (c, next) => {
+  console.log(c.req.raw.headers);
+  return next();
 });
 
-export const configureApp: PylonAPI["configureApp"] = async (app) => {
-  app.use("*", auth.initialize());
+app.use("*", auth.initialize());
 
-  app.post("/webhooks/shopify", auth.require(), async (c) => {
-    const repository = c.req.query("repository");
-    const repositoryCwd = c.req.query("repositoryCwd");
+app.use("*", async (c, next) => {
+  console.log(c.get("auth"));
 
-    if (!repository) {
-      throw new Error("No repository found");
-    }
+  return next();
+});
 
-    const result = await PublishEvent.publish("", {
-      repository,
-      repositoryCwd,
-    });
+app.post("/webhooks/shopify", auth.require(), async (c) => {
+  const repository = c.req.query("repository");
+  const repositoryCwd = c.req.query("repositoryCwd");
 
-    return c.json(result);
+  if (!repository) {
+    throw new Error("No repository found");
+  }
+
+  const result = await PublishEvent.publish("", {
+    repository,
+    repositoryCwd,
   });
-};
+
+  return c.json(result);
+});
+
+export default app;

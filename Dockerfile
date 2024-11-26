@@ -2,8 +2,8 @@
 # see all versions at https://hub.docker.com/r/oven/bun/tags
 FROM oven/bun:1 as base
 
-LABEL description="This is a template for a Pylon service"
-LABEL org.opencontainers.image.source="https://github.com/getcronit/pylon-template"
+LABEL description="Offical docker image for Pylon services (Bun)"
+LABEL org.opencontainers.image.source="https://github.com/getcronit/pylon"
 LABEL maintainer="office@cronit.io"
 
 WORKDIR /usr/src/pylon
@@ -29,6 +29,9 @@ COPY . .
 
 # [optional] tests & build
 ENV NODE_ENV=production
+
+# Create .pylon folder (mkdir)
+RUN mkdir -p .pylon
 # RUN bun test
 RUN bun run pylon build
 
@@ -41,4 +44,4 @@ COPY --from=prerelease /usr/src/pylon/package.json .
 # run the app
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "run", "./node_modules/.bin/pylon-server" ]
+ENTRYPOINT [ "bun", "run", "/usr/src/pylon/.pylon/index.js" ]

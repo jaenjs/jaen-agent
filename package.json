@@ -9,19 +9,15 @@
       "path": "git-cz"
     }
   },
+  "scripts": {
+    "dev": "pylon dev -c \"bun run .pylon/index.js\"",
+    "build": "pylon build"
+  },
   "dependencies": {
-    "@getcronit/pylon": "*",
-    "@getcronit/pylon-cli": "*",
-    "@getcronit/pylon-server": "*",
-    "hono": "^4.0.1"
+    "@getcronit/pylon": "^2.7.0",
+    "bun-types": "^1.1.37"
   },
   "devDependencies": {
-    "bun-types": "^1.0.26",
-    "commitizen": "^4.2.5",
-    "git-cz": "^4.9.0"
-  },
-  "scripts": {
-    "develop": "pylon develop",
-    "build": "pylon build"
+    "@getcronit/pylon-dev": "^1.0.1"
   }
 }

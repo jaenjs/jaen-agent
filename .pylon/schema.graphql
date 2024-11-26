@@ -1,0 +1,49 @@
+"""
+Configuration options for publishing a migration to Jaen.
+"""
+input PublishConfigInput {
+	repository: String!
+	repositoryCwd: String
+}
+type Query {
+version: String!
+}
+type Mutation {
+"""
+Publishes a migration to Jaen.
+@param migrationURL - The URL of the migration to publish.
+@param config - The publish configuration.
+@returns A `PublishEvent` instance representing the published migration.
+@throws A `GraphQLError` if the publish event fails.
+"""
+publish("""
+- The URL of the migration to publish.
+@param migrationURL - The URL of the migration to publish.
+"""
+migrationURL: String!, """
+- The publish configuration.
+@param config - The publish configuration.
+"""
+config: PublishConfigInput!): PublishEvent!
+}
+"""
+Represents a published Jaen migration.
+"""
+type PublishEvent {
+"""
+Enables basic storage and retrieval of dates and times.
+"""
+publishedDate: Date!
+repositoryPath: String!
+}
+scalar ID
+scalar Int
+scalar Float
+scalar Number
+scalar Any
+scalar Object
+scalar File
+scalar Date
+scalar JSON
+scalar String
+scalar Boolean
