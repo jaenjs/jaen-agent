@@ -19,6 +19,8 @@
 +    key,
 +    encoder.encode(payload)
 +  );
-+  return Buffer.from(signature).toString('base64');
++  const uint8Array = new Uint8Array(signature);
++  const base64String = btoa(String.fromCharCode(...uint8Array));
++  return base64String;
  }
 *** End Patch
