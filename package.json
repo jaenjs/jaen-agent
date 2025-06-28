@@ -13,10 +13,11 @@
     "deploy": "pylon build && wrangler deploy",
     "dev": "pylon dev -c \"wrangler dev --port 3000\" --client --client-port 3000 --client-path ./clients/jaen-agent/index.ts",
     "cf-typegen": "wrangler types",
-		"start": "wrangler dev",
-		"test": "vitest",
-		"build": "tsc",
-		"migrate:deploy": "./scripts/migrate.sh prod",
+                "start": "wrangler dev",
+                "test": "vitest",
+                "build": "tsc",
+                "postinstall": "patch-package",
+                "migrate:deploy": "./scripts/migrate.sh prod",
 		"migrate:reset": "./scripts/migrate.sh reset",
 		"migrate:seed": "./scripts/migrate.sh seed dev",
 		"migrate:status": "./scripts/migrate.sh status",
@@ -40,6 +41,7 @@
     "prisma": "^6.9.0",
     "typescript": "^5.6.3",
     "wrangler": "^3.60.3"
+    ,"patch-package": "^8.0.0"
   },
   "repository": {
     "type": "git",
