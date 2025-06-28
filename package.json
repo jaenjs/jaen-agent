@@ -1,6 +1,6 @@
 {
   "name": "@snek-functions/jaen-agent",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "description": "Generated with `sf new`",
   "author": "snek-at",
@@ -10,14 +10,40 @@
     }
   },
   "scripts": {
-    "dev": "pylon dev -c \"bun run .pylon/index.js\"",
-    "build": "pylon build"
+    "deploy": "pylon build && wrangler deploy",
+    "dev": "pylon dev -c \"wrangler dev --port 3000\" --client --client-port 3000 --client-path ./clients/jaen-agent/index.ts",
+    "cf-typegen": "wrangler types",
+		"start": "wrangler dev",
+		"test": "vitest",
+		"build": "tsc",
+		"migrate:deploy": "./scripts/migrate.sh prod",
+		"migrate:reset": "./scripts/migrate.sh reset",
+		"migrate:seed": "./scripts/migrate.sh seed dev",
+		"migrate:status": "./scripts/migrate.sh status",
+		"migrate:studio": "./scripts/migrate.sh studio",
+		"d1:info": "./scripts/migrate.sh d1-info",
+		"d1:backup": "./scripts/migrate.sh d1-backup"
   },
   "dependencies": {
-    "@getcronit/pylon": "^2.7.0",
-    "bun-types": "^1.1.37"
+    "@envelop/core": "^5.0.3",
+    "@getcronit/pylon": "^2.0.0",
+    "@gqty/cli": "^3.2.2",
+    "@prisma/adapter-d1": "^6.9.0",
+    "@prisma/client": "^6.9.0",
+    "gqty": "^3.2.2",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
-    "@getcronit/pylon-dev": "^1.0.1"
-  }
+    "@cloudflare/vitest-pool-workers": "^0.4.5",
+    "@cloudflare/workers-types": "^4.20240903.0",
+    "@getcronit/pylon-dev": "^1.0.0",
+    "prisma": "^6.9.0",
+    "typescript": "^5.6.3",
+    "wrangler": "^3.60.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/getcronit/pylon.git"
+  },
+  "homepage": "https://pylon.cronit.io"
 }

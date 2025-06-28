@@ -9,13 +9,6 @@ type Query {
 version: String!
 }
 type Mutation {
-"""
-Publishes a migration to Jaen.
-@param migrationURL - The URL of the migration to publish.
-@param config - The publish configuration.
-@returns A `PublishEvent` instance representing the published migration.
-@throws A `GraphQLError` if the publish event fails.
-"""
 publish("""
 - The URL of the migration to publish.
 @param migrationURL - The URL of the migration to publish.
@@ -31,9 +24,12 @@ Represents a published Jaen migration.
 """
 type PublishEvent {
 """
-Enables basic storage and retrieval of dates and times.
+The date when the migration was published.
 """
 publishedDate: Date!
+"""
+The path of the Jaen repository where the migration was published.
+"""
 repositoryPath: String!
 }
 scalar ID
@@ -41,6 +37,7 @@ scalar Int
 scalar Float
 scalar Number
 scalar Any
+scalar Void
 scalar Object
 scalar File
 scalar Date

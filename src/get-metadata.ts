@@ -1,12 +1,9 @@
-import { ServiceError, getContext } from "@getcronit/pylon";
-
-const baseUrl = process.env.AUTH_ISSUER;
-
-if (!baseUrl) {
-  throw new Error("No AUTH_ISSUER found in environment variables");
-}
+import { ServiceError, getContext, getEnv } from "@getcronit/pylon";
 
 export const getMetadata = async (key: "JAEN_GITHUB_ACCESS_TOKEN") => {
+  const env: any = getEnv();
+  const baseUrl = env.AUTH_ISSUER;
+
   const c = getContext();
 
   let authorization = c.req.header("Authorization");
